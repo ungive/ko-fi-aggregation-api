@@ -1,9 +1,10 @@
 {
-  "name": "ko-fi-api",
-  "version": "1.0.0",
-  "description": "This project was bootstrapped with Fastify-CLI.",
-  "main": "app.js",
+  "name": "ko-fi-aggregation-api",
+  "version": "0.1.0",
+  "description": "API for aggregating and accessing Ko-fi webhook data ",
+  "main": "app.ts",
   "type": "module",
+  "private": true,
   "directories": {
     "test": "test"
   },
@@ -21,8 +22,11 @@
     "dev": "concurrently \"npm run watch\" \"fastify start -w -l info -P dist/app.js\"",
     "test": "npm run build && node --test test/**/*.test.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "ko-fi",
+    "api"
+  ],
+  "author": "Jonas van den Berg",
   "license": "ISC",
   "dependencies": {
     "@fastify/autoload": "^6.0.0",
