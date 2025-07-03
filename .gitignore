@@ -60,3 +60,6 @@ profile*
 # env
 .env*
 !.env.example
+
+# ts
+dist

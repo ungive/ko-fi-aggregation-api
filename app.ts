@@ -1,9 +1,9 @@
-'use strict'
-
 import { fileURLToPath } from 'node:url'
 import { join, dirname } from 'node:path'
+import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import fastifyAutoload from '@fastify/autoload'
 import dotenv from 'dotenv'
+import { FastifyInstance, FastifyPluginOptions } from 'fastify'
 
 dotenv.config()
 
@@ -18,9 +18,9 @@ const __dirname = dirname(__filename)
 
 const options = {}
 
-export default async function (fastify, opts) {
-  
-  // ...
+export default async function (fastify: FastifyInstance, opts: FastifyPluginOptions) {
+
+  fastify.withTypeProvider<TypeBoxTypeProvider>()
 
   fastify.register(fastifyAutoload, {
     dir: join(__dirname, 'plugins'),
