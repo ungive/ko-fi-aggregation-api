@@ -27,7 +27,7 @@
     "api"
   ],
   "author": "Jonas van den Berg",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@fastify/autoload": "^6.0.0",
     "@fastify/formbody": "^8.0.2",
