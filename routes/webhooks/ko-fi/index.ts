@@ -46,7 +46,9 @@ export default async function (fastify: FastifyInstance) {
         fastify.log.error(`Received an invalid verification token: "${verificationToken}"`)
         return reply.code(WEBHOOK_NO_RETRY).send()
       }
-      if (data.kofi_transaction_id === KO_FI_EXAMPLE_TRANSACTION_ID) {
+      if (process.env.STORE_TEST_WEBHOOKS === '1') {
+        fastify.log.warn(`Accepting test webhook with message ID ${data.message_id}`)
+      } else if (data.kofi_transaction_id === KO_FI_EXAMPLE_TRANSACTION_ID) {
         fastify.log.info({ data }, "Ignored test payload from Ko-Fi dashboard")
         return reply.code(WEBHOOK_NO_RETRY).send()
       }
@@ -61,7 +63,7 @@ export default async function (fastify: FastifyInstance) {
       catch (err) {
         throw fastify.httpErrors.internalServerError(`Failed to store webhook payload: ${err}`)
       }
-      fastify.log.info(`Stored Ko-Fi webook with message ID ${data.message_id}`)
+      fastify.log.info(`Stored webook with message ID ${data.message_id}`)
       return reply.code(WEBHOOK_OK).send()
     }
   })
