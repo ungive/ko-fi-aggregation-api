@@ -4,8 +4,8 @@ import { Type } from '@sinclair/typebox'
 import { TypeCompiler } from '@sinclair/typebox/compiler'
 import { verifyToken } from '../../../util/verifyToken.js'
 
-const STATUS_OK = 200
-const STATUS_PREVENT_RETRY = STATUS_OK
+const WEBHOOK_OK = 200
+const WEBHOOK_NO_RETRY = WEBHOOK_OK
 
 const koFiWebhookBodySchema = Type.Object({
   data: Type.String()
@@ -38,17 +38,26 @@ export default async function (fastify: FastifyInstance) {
       request: FastifyRequest<{ Body: { data: KoFiWebhookPayload } }>,
       reply: FastifyReply
     ) => {
-
       const data = request.body.data
       const verificationToken = data.verification_token
       const expectedToken = process.env.KO_FI_VERIFICATION_TOKEN || ''
       if (!verifyToken(verificationToken, expectedToken)) {
         fastify.log.error(`Received an invalid verification token: "${verificationToken}"`)
-        return reply.code(STATUS_PREVENT_RETRY).send()
+        return reply.code(WEBHOOK_NO_RETRY).send()
       }
-      // TODO Store payload
+      if (fastify.db.webhookPayloads.findOne({ message_id: data.message_id })) {
+        fastify.log.warn(`Ignored message with ID ${data.message_id} because it already exists`)
+        return reply.code(WEBHOOK_NO_RETRY).send()
+      }
+      try {
+        fastify.db.webhookPayloads.insert(data)
+        fastify.db.loki.save()
+      }
+      catch (err) {
+        throw fastify.httpErrors.internalServerError(`Failed to store webhook payload: ${err}`)
+      }
       fastify.log.info({ data }, 'Ko-fi Webhook Received')
-      return reply.code(STATUS_OK).send()
+      return reply.code(WEBHOOK_OK).send()
     }
   })
 }

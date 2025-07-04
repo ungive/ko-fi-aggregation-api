@@ -4,11 +4,10 @@ import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import fastifyAutoload from '@fastify/autoload'
 import dotenv from 'dotenv'
 import { FastifyInstance, FastifyPluginOptions } from 'fastify'
+import lokiPlugin from './plugins/loki.js'
 
-dotenv.config()
-
-const token = process.env.KO_FI_VERIFICATION_TOKEN
-if (!token || token.length < 8) {
+dotenv.config({ quiet: true })
+if (!process.env.KO_FI_VERIFICATION_TOKEN) {
   console.error('Missing KO_FI_VERIFICATION_TOKEN environment variable')
   process.exit(1)
 }
@@ -21,6 +20,7 @@ const options = {}
 export default async function (fastify: FastifyInstance, opts: FastifyPluginOptions) {
 
   fastify.withTypeProvider<TypeBoxTypeProvider>()
+  fastify.register(lokiPlugin)
 
   fastify.register(fastifyAutoload, {
     dir: join(__dirname, 'plugins'),

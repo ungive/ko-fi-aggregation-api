@@ -17,5 +17,11 @@
         "util/**/*.ts",
         "app.ts",
         "types.ts",
+    ],
+    "exclude": [
+        "node_modules",
+        "scripts",
+        "dist",
+        "*.json",
     ]
 }

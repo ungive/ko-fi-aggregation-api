@@ -63,3 +63,7 @@ profile*
 
 # ts
 dist
+
+# data
+data.json
+webhookPayloads*.json

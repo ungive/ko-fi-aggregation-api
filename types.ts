@@ -1,4 +1,5 @@
 import { Type, type Static } from '@fastify/type-provider-typebox'
+import { Collection } from 'lokijs'
 
 export type KoFiWebhookPayload = Static<typeof koFiWebhookPayloadSchema>
 export const koFiWebhookPayloadSchema = Type.Object({
@@ -25,3 +26,7 @@ export const koFiWebhookPayloadSchema = Type.Object({
   tier_name: Type.String(),
   shipping: Type.Union([Type.Any(), Type.Null()]) // not yet supported
 })
+
+export interface StoreData {
+  webhookPayloads: Collection<KoFiWebhookPayload>
+}
