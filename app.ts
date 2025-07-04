@@ -6,6 +6,7 @@ import dotenv from 'dotenv'
 import { FastifyInstance, FastifyPluginOptions } from 'fastify'
 import authenticateTokenPlugin from './plugins/authenticateToken.js'
 import lokiPlugin from './plugins/loki.js'
+import { existsSync, mkdirSync } from 'node:fs'
 
 dotenv.config({ quiet: true })
 if (!process.env.KO_FI_VERIFICATION_TOKEN) {
@@ -17,9 +18,13 @@ if (!process.env.API_TOKEN) {
   process.exit(1)
 }
 
-
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
+
+const dir = join(process.cwd(), 'data');
+if (!existsSync(dir)) {
+  mkdirSync(dir);
+}
 
 const options = {}
 

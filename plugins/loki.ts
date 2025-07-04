@@ -2,6 +2,7 @@ import fp from 'fastify-plugin'
 import { FastifyInstance } from 'fastify'
 import Loki from 'lokijs'
 import { KoFiWebhookPayload, StoreData } from '../types.js'
+import path from 'node:path'
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -16,7 +17,7 @@ const AUTOSAVE_MILLIS = 30 * 1000
 export default fp(async function (fastify: FastifyInstance) {
   if (fastify.hasDecorator('db')) return
   const adapter = new Loki.LokiFsAdapter()
-  const loki = new Loki('data.json', {
+  const loki = new Loki(path.join('data', 'data.json'), {
     adapter,
     autoload: true,
     autosave: true,
