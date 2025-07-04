@@ -34,6 +34,7 @@
     "@fastify/autoload": "^6.0.0",
     "@fastify/formbody": "^8.0.2",
     "@fastify/sensible": "^6.0.0",
+    "@fastify/type-provider-typebox": "^5.1.0",
     "@sinclair/typebox": "^0.34.37",
     "date-fns": "^4.1.0",
     "dotenv": "^17.0.1",
@@ -43,7 +44,6 @@
     "lokijs": "^1.5.12"
   },
   "devDependencies": {
-    "@fastify/type-provider-typebox": "^5.1.0",
     "@types/lokijs": "^1.5.14",
     "@types/node": "^24.0.10",
     "concurrently": "^9.2.0",
