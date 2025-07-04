@@ -14,9 +14,7 @@ declare module 'fastify' {
 const AUTOSAVE_MILLIS = 30 * 1000
 
 export default fp(async function (fastify: FastifyInstance) {
-  if (fastify.hasDecorator('db')) {
-    return
-  }
+  if (fastify.hasDecorator('db')) return
   const adapter = new Loki.LokiFsAdapter()
   const loki = new Loki('data.json', {
     adapter,
