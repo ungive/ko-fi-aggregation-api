@@ -18,6 +18,7 @@ export default async function (fastify: FastifyInstance) {
         .where(data => data.is_subscription_payment && new Date(data.timestamp) >= oneMonthAgo)
         .simplesort('timestamp')
         .data()
+        .map(({ meta, $loki, ...rest }) => rest);
     }
   })
 }

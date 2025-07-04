@@ -15,6 +15,7 @@ export default async function (fastify: FastifyInstance) {
         .where(data => data.is_subscription_payment)
         .simplesort('timestamp')
         .data()
+        .map(({ meta, $loki, ...rest }) => rest);
     }
   })
 }

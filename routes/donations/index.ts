@@ -14,6 +14,7 @@ export default async function (fastify: FastifyInstance) {
         .find({ type: 'Donation' })
         .simplesort('timestamp')
         .data()
+        .map(({ meta, $loki, ...rest }) => rest);
     }
   })
 }
