@@ -30,3 +30,7 @@ export const koFiWebhookPayloadSchema = Type.Object({
 export interface StoreData {
   webhookPayloads: Collection<KoFiWebhookPayload>
 }
+
+export interface AuthenticationTokenQuery {
+  token: string;
+}
