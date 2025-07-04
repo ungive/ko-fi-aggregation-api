@@ -6,6 +6,7 @@ import { verifyToken } from '../../../util/verifyToken.js'
 
 const WEBHOOK_OK = 200
 const WEBHOOK_NO_RETRY = WEBHOOK_OK
+const KO_FI_EXAMPLE_TRANSACTION_ID = "00000000-1111-2222-3333-444444444444"
 
 const koFiWebhookBodySchema = Type.Object({
   data: Type.String()
@@ -45,6 +46,10 @@ export default async function (fastify: FastifyInstance) {
         fastify.log.error(`Received an invalid verification token: "${verificationToken}"`)
         return reply.code(WEBHOOK_NO_RETRY).send()
       }
+      if (data.kofi_transaction_id === KO_FI_EXAMPLE_TRANSACTION_ID) {
+        fastify.log.info({ data }, "Ignored test payload from Ko-Fi dashboard")
+        return reply.code(WEBHOOK_NO_RETRY).send()
+      }
       if (fastify.db.webhookPayloads.findOne({ message_id: data.message_id })) {
         fastify.log.warn(`Ignored message with ID ${data.message_id} because it already exists`)
         return reply.code(WEBHOOK_NO_RETRY).send()
@@ -56,7 +61,7 @@ export default async function (fastify: FastifyInstance) {
       catch (err) {
         throw fastify.httpErrors.internalServerError(`Failed to store webhook payload: ${err}`)
       }
-      fastify.log.info({ data }, 'Ko-fi Webhook Received')
+      fastify.log.info(`Stored Ko-Fi webook with message ID ${data.message_id}`)
       return reply.code(WEBHOOK_OK).send()
     }
   })
