@@ -19,7 +19,7 @@
     "clean": "rimraf dist",
     "build": "tsc",
     "watch": "tsc --watch",
-    "start": "npm run build && fastify start -l info -p 80 -a 0.0.0.0 dist/app.js",
+    "start": "fastify start -l info -p 80 -a 0.0.0.0 dist/app.js",
     "start:dev:wait": "wait-on dist/app.js && fastify start -w -l info -P dist/app.js",
     "dev": "concurrently -k \"npm run clean && npm run watch\" \"npm run start:dev:wait\"",
     "test": "npm run build && node --test test/**/*.test.js"

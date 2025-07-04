@@ -47,7 +47,7 @@ Optional variables:
 
 ```sh
 npm run dev  # development
-npm run --silent start  # production
+npm run build && npm run --silent start  # production
 ```
 
 ## Export all webhook data
